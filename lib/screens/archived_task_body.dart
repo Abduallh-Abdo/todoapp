@@ -10,11 +10,11 @@ class ArchivedTaskScreen extends StatelessWidget {
  
   @override
   Widget build(BuildContext context) {
-    var cubit = ToDoCubit.get(context);
+    // var cubit = ToDoCubit.get(context);
     return BlocConsumer<ToDoCubit, ToDoStates>(
       listener: (context, state) {},
       builder: (context, state) {
-        return tasksBuilder(tasks: cubit.archivedTasks);
+        return tasksBuilder(tasks: ToDoCubit.get(context).archivedTasks);
       },
     );
   }

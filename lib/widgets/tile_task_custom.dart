@@ -3,7 +3,7 @@ import 'package:todoapp/cubit/cubit.dart';
 
 @override
 Widget CustomTile(Map model, context) {
-  var cubit = ToDoCubit.get(context);
+  ToDoCubit cubit = ToDoCubit.get(context);
   // return BlocConsumer<ToDoCubit, ToDoStates>(
   //   listener: (context, state) {},
   //   builder: (context, state) {
@@ -102,6 +102,21 @@ Widget CustomTile(Map model, context) {
         ),
       ),
     ),
+    onDismissed: (direction) {
+      cubit.deleteFromDB(id: model['id']);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'Task Deleted',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          duration: Duration(seconds: 3),
+        ),
+      );
+    },
   );
   //   },
   // );

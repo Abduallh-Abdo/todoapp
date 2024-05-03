@@ -3,7 +3,7 @@ import 'package:todoapp/cubit/cubit.dart';
 import 'package:todoapp/widgets/custom_buttom_sheet.dart';
 
 Widget CustomFloatingButton(BuildContext context) {
-  var cubit = ToDoCubit.get(context);
+  ToDoCubit cubit = ToDoCubit.get(context);
 
   return FloatingActionButton(
     onPressed: () {

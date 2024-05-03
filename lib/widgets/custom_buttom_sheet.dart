@@ -3,7 +3,7 @@ import 'package:todoapp/cubit/cubit.dart';
 import 'package:todoapp/widgets/texr_form_custom.dart';
 
 Widget CustomBottomSheet(BuildContext context) {
-  var cubit = ToDoCubit.get(context);
+  ToDoCubit cubit = ToDoCubit.get(context);
 
   return SizedBox(
     height: 400,
@@ -57,22 +57,3 @@ Widget CustomBottomSheet(BuildContext context) {
   );
 }
 
-
-          // ElevatedButton(
-          //   child: const Text(
-          //     'Save',
-          //     style: TextStyle(
-          //       color: Colors.black,
-          //       fontSize: 25,
-          //     ),
-          //   ),
-          //   onPressed: () {
-          //     cubit.insertDB(
-          //         //to save date in database must be DateFormat('yyyy-MM-dd').format(date)
-          //         //to save in time database must be cubit.time.format(date)
-          //         title: titleController.text,
-          //         date: DateFormat('yyyy-MM-dd').format(cubit.date),
-          //         time: cubit.time.format(context));
-          //     Navigator.pop(context);
-          //   },
-          // ),

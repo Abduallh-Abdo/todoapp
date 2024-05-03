@@ -8,8 +8,6 @@ import 'package:todoapp/widgets/floating_Button_custom.dart';
 class HomePage extends StatelessWidget {
   HomePage({super.key});
 
-  // final TextEditingController titleController = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -19,8 +17,8 @@ class HomePage extends StatelessWidget {
           if (state is InsertState) Navigator.pop(context);
         },
         builder: (context, state) {
-          var cubit = ToDoCubit.get(context);
-          
+          ToDoCubit cubit = ToDoCubit.get(context);
+
           return Scaffold(
             key: cubit.scaffoldKey,
             appBar: AppBar(

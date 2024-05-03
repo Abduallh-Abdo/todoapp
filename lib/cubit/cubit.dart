@@ -11,7 +11,7 @@ class ToDoCubit extends Cubit<ToDoStates> {
   bool isDone = false;
 
   ToDoCubit() : super(InitialState()) {
-    createDB(); // Initialize the database
+    // createDB(); // Initialize the database
   }
   static ToDoCubit get(context) => BlocProvider.of(context);
 
@@ -38,16 +38,16 @@ class ToDoCubit extends Cubit<ToDoStates> {
 
   void changeCurrentIndex(int index) {
     print('1');
-
     currentIndex = index;
     emit(ChangeCurrentIndexState());
   }
 
   List<Map>? tasks;
 
-  late List<Map> newTasks = [];
-  late List<Map> doneTasks = [];
-  late List<Map> archivedTasks = [];
+  late List<Map> newTasks ;
+  late List<Map> doneTasks;
+  late List<Map> archivedTasks;
+
   late Database database;
 
   bool isBottomSheetShown = false;
@@ -74,9 +74,9 @@ class ToDoCubit extends Cubit<ToDoStates> {
       },
     ).then((value) {
       database = value;
+      emit(CreateDatabaseState());
     }).catchError((error) {
       print(error.toString());
-      emit(CreateDatabaseState());
     });
   }
 
@@ -91,7 +91,8 @@ class ToDoCubit extends Cubit<ToDoStates> {
         // 'INSERT INTO tasks(title, date, time, status) VALUES(?, ?)',
         // [note, number],
         '''INSERT INTO tasks(title, date, time, status)
-             VALUES("$title" , "$date","$time","$status")''').then((value) {
+             VALUES("$title" , "$date","$time","$status")''')
+             .then((value) {
       // this value is the ID to this insertedRow
       emit(InsertState());
       getRecordsFromDB(database);
@@ -111,8 +112,8 @@ class ToDoCubit extends Cubit<ToDoStates> {
       'UPDATE tasks SET status=? WHERE id=?',
       [status, id],
     ).then((value) {
-      emit(UpdateState());
       getRecordsFromDB(database);
+      emit(UpdateState());
     });
   }
 
