@@ -17,6 +17,7 @@ class HomePage extends StatelessWidget {
           if (state is InsertState) Navigator.pop(context);
         },
         builder: (context, state) {
+          print('bilder');
           ToDoCubit cubit = ToDoCubit.get(context);
 
           return Scaffold(
@@ -32,14 +33,19 @@ class HomePage extends StatelessWidget {
             ),
             body: ConditionalBuilder(
               condition: cubit.tasks != null,
-              builder: (context) => cubit.screens[cubit.currentIndex],
-              // fallback: (context) {
-              //   return const Center(
-              //     child: Text('no tasks yet'),
-              //   );
-              // },
-              fallback: (context) =>
-                  const Center(child: CircularProgressIndicator()),
+              builder: (context) {
+                // print(cubit.screens[cubit.currentIndex].toString());
+                // print(cubit.tasks.toString());
+                return cubit.screens[cubit.currentIndex];
+              },
+              fallback: (context) {
+                // print(cubit.tasks.toString());
+                return const Center(
+                  child: Text('no tasks yet'),
+                );
+              },
+              // fallback: (context) =>
+              //     const Center(child: CircularProgressIndicator()),
             ),
             floatingActionButton: CustomFloatingButton(context),
             bottomNavigationBar: BottomNavigationBar(

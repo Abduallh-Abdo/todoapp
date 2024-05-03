@@ -10,6 +10,8 @@ class DeleteState extends ToDoStates {}
 
 class GetRecordsState extends ToDoStates {}
 
+class CreateDatabaseLoadingState extends ToDoStates {}
+
 class GetRecordsLoadingState extends ToDoStates {}
 
 class CreateDatabaseState extends ToDoStates {}

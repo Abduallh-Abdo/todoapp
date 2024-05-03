@@ -8,8 +8,6 @@ import 'package:todoapp/screens/done_task_body.dart';
 import 'package:todoapp/screens/newTask_screen.dart';
 
 class ToDoCubit extends Cubit<ToDoStates> {
-  bool isDone = false;
-
   ToDoCubit() : super(InitialState()) {
     // createDB(); // Initialize the database
   }
@@ -44,7 +42,7 @@ class ToDoCubit extends Cubit<ToDoStates> {
 
   List<Map>? tasks;
 
-  late List<Map> newTasks ;
+  late List<Map> newTasks;
   late List<Map> doneTasks;
   late List<Map> archivedTasks;
 
@@ -55,7 +53,7 @@ class ToDoCubit extends Cubit<ToDoStates> {
 
   // (ID INTEGER PRIMARY KEY, title TEXT, date TEXT, time TEXT, status TEXT)
   void createDB() async {
-    print('2');
+    emit(CreateDatabaseLoadingState());
 
     await openDatabase(
       'todo.db',
@@ -63,19 +61,18 @@ class ToDoCubit extends Cubit<ToDoStates> {
       onCreate: (db, version) {
         print('database created');
         db.execute('''
-        CREATE TABLE tasks(id INTEGER PRIMARY KEY, title TEXT,date TEXT,time TEXT, status TEXT)
+        CREATE TABLE tasks(ID INTEGER PRIMARY KEY, title TEXT,date TEXT,time TEXT, status TEXT)
         ''').then((value) {
           print('table created');
         });
       },
       onOpen: (db) {
         print('open database');
+        database = db;
         getRecordsFromDB(database);
+        emit(CreateDatabaseState());
       },
-    ).then((value) {
-      database = value;
-      emit(CreateDatabaseState());
-    }).catchError((error) {
+    ).catchError((error) {
       print(error.toString());
     });
   }
@@ -91,9 +88,11 @@ class ToDoCubit extends Cubit<ToDoStates> {
         // 'INSERT INTO tasks(title, date, time, status) VALUES(?, ?)',
         // [note, number],
         '''INSERT INTO tasks(title, date, time, status)
-             VALUES("$title" , "$date","$time","$status")''')
-             .then((value) {
+             VALUES("$title" , "$date","$time","$status")''').then((value) {
       // this value is the ID to this insertedRow
+      titleController.clear();
+      timeController.clear();
+      dateController.clear();
       emit(InsertState());
       getRecordsFromDB(database);
       print('insert success : $value');
@@ -145,6 +144,7 @@ class ToDoCubit extends Cubit<ToDoStates> {
       'SELECT * FROM tasks',
     )
         .then((value) {
+      tasks = value;
       for (Map<String, Object?> row in value) {
         if (row['status'] == 'new') {
           newTasks.add(row);
@@ -203,14 +203,12 @@ class ToDoCubit extends Cubit<ToDoStates> {
   }
 
   void toggleCheckbox(bool newValue, int id) {
-    print('10');
-
     if (newValue == true) {
       updateDB(status: 'done', id: id);
     } else {
       updateDB(status: 'new', id: id);
     }
-    isDone = newValue;
+
     emit(CheckboxChangedState());
   }
 
